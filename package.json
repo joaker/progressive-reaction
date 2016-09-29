@@ -1,0 +1,25 @@
+{
+  "name": "progressive-scheduler",
+  "version": "1.0.0",
+  "description": "progressive resource scheduling app",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "progressive",
+    "scheduling",
+    "offline",
+    "react"
+  ],
+  "author": "Jack Ofnotrade <jooakley@gmail.com> (http://github.com/joaker)",
+  "license": "ISC",
+  "dependencies": {
+    "connect": "^3.5.0",
+    "connect-assetmanager": "0.0.28",
+    "connect-assetmanager-handlers": "0.0.18",
+    "ejs": "^2.5.2",
+    "express": "^4.14.0",
+    "rethinkdb": "^2.3.3"
+  }
+}
