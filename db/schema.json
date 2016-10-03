@@ -1,0 +1,18 @@
+{
+  "tables": [
+    {
+      "name": "clients",
+      "description": "Customers and potential customers",
+      "indices": []
+    },
+    {
+      "name": "timeslots",
+      "description": "Timeslots which may be booked",
+      "indices": []
+    },
+    {
+      "name": "bookings",
+      "indices": []
+    }
+  ]
+}
