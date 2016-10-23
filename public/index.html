@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>
+      Figaro Cuts
+    </title>
+  </head>
+  <body>
+    <ul>
+      <li>
+        <a href="https://github.com/github/progressive-scheduler">
+          <!-- <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/365986a132ccd6a44c23a9169022c0b5c890c387/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f7265645f6161303030302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png"> -->
+          Fork me
+        </a>
+      </li>
+    <li>
+      <a onclick="unregister()" href="#">Unregister</a>
+    </li>
+    <p hidden>
+      Service worker registered!
+    </p>
+    <script>
+      const worker = navigator.serviceWorker;
+      function register(){
+        worker.register('./service-worker.js', {
+          scope: './'
+        }).then(function(worker) {
+          console.log('Worker is available', worker);
+          document.querySelector('p').removeAttribute('hidden');
+        }).catch(function(error) {
+          console.log('Failed to register service worker');
+        });
+      }
+
+      function unregister(){
+        if(!worker) return; // no worker support?  nevermind
+        worker.getRegistrations().then(function(registrations){
+          for( let registration of registrations ){
+            registration.unregister();
+          }
+        })
+      }
+
+      if (worker) {
+        register();
+      }
+    </script>
+  </body>
+</html>

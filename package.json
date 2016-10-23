@@ -4,6 +4,7 @@
   "description": "progressive resource scheduling app",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "rethink": "rethinkdb",
     "rethinkdb": "rethinkdb",
@@ -21,15 +22,28 @@
   "author": "Jack Ofnotrade <jooakley@gmail.com> (http://github.com/joaker)",
   "license": "ISC",
   "dependencies": {
+    "babel-polyfill": "^6.16.0",
     "babel-preset-es2015": "^6.16.0",
     "babel-preset-es2017": "^6.16.0",
     "babel-preset-react": "^6.16.0",
+    "babel-preset-react-hmre": "^1.1.1",
+    "classnames": "^2.2.5",
     "connect": "^3.5.0",
     "connect-assetmanager": "0.0.28",
     "connect-assetmanager-handlers": "0.0.18",
     "ejs": "^2.5.2",
     "express": "^4.14.0",
+    "muicss": "^0.9.3",
+    "node-sass": "^3.10.1",
+    "react": "^15.3.2",
     "rethink-migrate": "^1.3.1",
-    "rethinkdb": "^2.3.3"
+    "rethinkdb": "^2.3.3",
+    "webpack": "^1.13.2",
+    "webpack-dev-middleware": "^1.8.4",
+    "webpack-hot-middleware": "^2.13.0"
+  },
+  "devDependencies": {
+    "babel-plugin-transform-runtime": "^6.15.0",
+    "babel-runtime": "^6.11.6"
   }
 }
