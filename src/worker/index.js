@@ -13,7 +13,7 @@ messenger.onMessage = (message) => {
   console.log("hey there, got a message for you:");
   console.log(message);
 }
-message.send("hello, worker");
+messenger.send("hello, worker");
 /* END Messenging */
 
 /* START Event Handler Registration*/

@@ -7,4 +7,4 @@ export const App = () => {
 };
 
 const container = document.getElementById('container');
-React.renderComponent(<App/>, container);
+ReactDOM.render(<App/>, container);
