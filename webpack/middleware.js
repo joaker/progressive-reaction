@@ -12,9 +12,6 @@ var middleware = app => {
     publicPath: wonfig.output.publicPath,
   }));
   app.use(webpackHotMiddleware(wompiler));
-
-
-
 };
 
 module.exports = middleware;

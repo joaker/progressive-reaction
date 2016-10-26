@@ -16,7 +16,10 @@
     <li>
       <a onclick="unregister()" href="#">Unregister</a>
     </li>
-    <p hidden>
+    <p id="message" hidden>
+      Service worker registered!
+    </p>
+    <p id="offline-message" hidden>
       Service worker registered!
     </p>
     <script>
@@ -45,5 +48,7 @@
         register();
       }
     </script>
+    <script src="/bundles/AppShell.js"></script>
+    <script src="/bundles/service-worker.js"></script>
   </body>
 </html>

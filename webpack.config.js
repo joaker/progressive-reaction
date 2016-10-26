@@ -5,19 +5,28 @@ module.exports = {
   entry: {
     AppShell: [
       'webpack-hot-middleware/client',
-      'babel-polyfill',
+      // 'babel-polyfill',
       // __dirname + '/src/polyfills.js', // polyfills for Promise and fetch
       __dirname + '/src/client/AppShell' // boot code for the client
     ],
+    "service-worker": [
+      'webpack-hot-middleware/client',
+      // 'babel-polyfill',
+      __dirname + '/src/worker/index' // boot code for the client
+    ],
   },
   output: {
-    path: __dirname + '/public/bundles',
+    path: __dirname + '/public',
     publicPath: '/',
     filename: '[name].js'
   },
   plugins: [
     new webpack.optimize.OccurrenceOrderPlugin(),
-    new webpack.HotModuleReplacementPlugin()
+    new webpack.HotModuleReplacementPlugin(),
+    new webpack.ProvidePlugin({
+      'React': 'react',
+      'ReactDOM': 'react-dom'
+    }),
   ],
   resolve: {
     extensions: ['', '.js', '.jsx'],

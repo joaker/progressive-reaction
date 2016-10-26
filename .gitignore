@@ -3,3 +3,4 @@ rethinkdb_data
 .ignored
 *.ignored
 bundles
+public

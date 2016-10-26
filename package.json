@@ -11,7 +11,8 @@
     "db:create": "rethink-migrate create",
     "db:up": "rethink-migrate --env ${NODE_ENV:-development} up",
     "db:down": "rethink-migrate --env ${NODE_ENV:-development}down",
-    "db:reset": "rethink-migrate --env ${NODE_ENV:-development} down --all"
+    "db:reset": "rethink-migrate --env ${NODE_ENV:-development} down --all",
+    "clean": "rm -rf public && mkdir public"
   },
   "keywords": [
     "progressive",

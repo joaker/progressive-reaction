@@ -1,5 +1,3 @@
-'use strict';
-
 // References:
 // https://github.com/MicheleBertoli/react-worker
 // https://github.com/mdn/sw-test/blob/gh-pages/sw.js
@@ -7,30 +5,24 @@
 /* Synchronously import scripts into a worker */
 //self.importScripts('serviceworker-cache-polyfill.js');
 //self.importScripts('build.js');
+import config from './config';
+import messenger from './messenger';
 
-const config = {
-  name: 'progressive-scheduler-cache-name',
-  options: {
-    headers: {
-      'Content-Type': 'text/html'
-    },
-  },
-  staticFiles: [
-    "/",
-    "/bundles/AppShell.js",
-  ],
-};
-
+/* START Messenging */
+messenger.onMessage = (message) => {
+  console.log("hey there, got a message for you:");
+  console.log(message);
+}
+message.send("hello, worker");
+/* END Messenging */
 
 /* START Event Handler Registration*/
 self.addEventListener('fetch', fetchMiddleware);
 self.addEventListener('activate', activateMiddleware);
+self.addEventListener('install', cacheAppShell);
 /* END Event Handler Registration */
 
 /* START Event Handlers */
-
-this.addEventListener('install', cacheAppShell);
-
 function cacheAppShell(event) {
   event.waitUntil( // 'waitUntil' is effectively a "yield" statement
     caches.open(config.name).then(cacheStaticFiles)
