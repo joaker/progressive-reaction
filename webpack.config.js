@@ -1,7 +1,7 @@
 const webpack = require('webpack');
 
 module.exports = {
-  devtool: 'inline-source-map',
+  devtool: 'eval-source-map',
   entry: {
     AppShell: [
       'webpack-hot-middleware/client',
@@ -18,7 +18,7 @@ module.exports = {
   output: {
     path: __dirname + '/public',
     publicPath: '/',
-    filename: '[name].js'
+    filename: '[name].bundle.js'
   },
   plugins: [
     new webpack.optimize.OccurrenceOrderPlugin(),

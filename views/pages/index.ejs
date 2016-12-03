@@ -26,11 +26,13 @@
     <script>
       const worker = navigator.serviceWorker;
       function register(){
-        worker.register('./service-worker.js', {
+        if(!worker) return; // no worker support?  nevermind
+        worker.register('./service-worker.bundle.js', {
           scope: './'
         }).then(function(worker) {
           console.log('Worker is available', worker);
           document.querySelector('p').removeAttribute('hidden');
+          reload();
         }).catch(function(error) {
           console.log('Failed to register service worker');
         });
@@ -45,11 +47,9 @@
         })
       }
 
-      if (worker) {
-        register();
-      }
+      register();
     </script>
-    <script src="/AppShell.js"></script>
-    <script src="/service-worker.js"></script>
+    <script src="/AppShell.bundle.js"></script>
+    <!-- <script src="/service-worker.bundle.js"></script> -->
   </body>
 </html>

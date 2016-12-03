@@ -7,8 +7,7 @@ export const config = {
   },
   staticFiles: [
     "/",
-    "/bundles/AppShell.js",
-    "/bundles/service-worker.js",
+    "/AppShell.bundle.js",
   ],
 };
 

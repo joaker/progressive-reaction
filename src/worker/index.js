@@ -6,7 +6,10 @@
 //self.importScripts('serviceworker-cache-polyfill.js');
 //self.importScripts('build.js');
 import config from './config';
-import messenger from './messenger';
+import createMessenger from './messenger';
+
+const workerRegistration = self;
+const messenger = createMessenger(workerRegistration);
 
 /* START Messenging */
 messenger.onMessage = (message) => {
@@ -19,13 +22,13 @@ messenger.send("hello, worker");
 /* START Event Handler Registration*/
 self.addEventListener('fetch', fetchMiddleware);
 self.addEventListener('activate', activateMiddleware);
-self.addEventListener('install', cacheAppShell);
+self.addEventListener('install', precache);
 /* END Event Handler Registration */
 
 /* START Event Handlers */
-function cacheAppShell(event) {
-  event.waitUntil( // 'waitUntil' is effectively a "yield" statement
-    caches.open(config.name).then(cacheStaticFiles)
+function precache(event) {
+  event.waitUntil(
+    caches.open(config.name).then(buildPrecache)
   );
 }
 
@@ -51,20 +54,50 @@ function activateMiddleware() {
 
 /* START Helpers */
 
-const cacheStaticFiles = (cache) => {
+const buildPrecache = (cache) => {
   const filesToCache = config.staticFiles;
-  for (let publicPath in filesToCache) {
+  for (let publicPath of filesToCache) {
     console.log("public path: " + publicPath);
   }
   return cache.addAll(filesToCache);
 };
 
-function isCacheable(event) {
-  const url = event.request.url;
-  const isScript = () => /\.js$/.test(url);
-  const isKnownCache = () => config.staticFiles.includes(url);
+const defaultMetadata = {};
+const createEventMetadata = (event) => {
+  const url = event && event.request && event.request.url;
+  if(!url) return defaultMetadata;
 
-  const cacheable = isScript() || isKnownCache();
+  // request type definitions
+  const isScript= /\.js$/.test(url);
+  const isStyle= /\.css$/.test(url);
+  const isHTML= /\.htm.*/.test(url);
+  const isPrecache= config.staticFiles.includes(url);
+
+  // list of request types that are cacheable
+  const cacheableCriteria = [
+    isScript,
+    isStyle,
+    isHTML,
+    isPrecache,
+  ];
+
+  // Does this request match any of the criteria?
+  const isCacheable= cacheableCriteria.some(cc => cc);
+
+  const metadata = {
+    isScript,
+    isStyle,
+    isHTML,
+    isPrecache,
+    isCacheable,
+  };
+
+  return metadata;
+};
+
+function isCacheable(event) {
+  const metadata = createEventMetadata(event);
+  const cacheable = metadata.isCacheable;
   return cacheable;
 }
 
