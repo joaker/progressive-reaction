@@ -68,6 +68,9 @@ const createEventMetadata = (event) => {
   if(!url) return defaultMetadata;
 
   // request type definitions
+  const isServiceWorker = /service-worker\.bundle\.js$/.test(url);
+
+  // request type definitions
   const isScript= /\.js$/.test(url);
   const isStyle= /\.css$/.test(url);
   const isHTML= /\.htm.*/.test(url);
