@@ -5,9 +5,9 @@ export const config = {
       'Content-Type': 'text/html'
     },
   },
-  staticFiles: [
-    "/",
-    "/AppShell.bundle.js",
+  staticFiles: [ // we don't want to cache assets that will be inclduded by default
+    // "/",
+    // "/AppShell.bundle.js",
   ],
 };
 

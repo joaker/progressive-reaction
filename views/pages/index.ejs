@@ -32,9 +32,9 @@
         }).then(function(worker) {
           console.log('Worker is available', worker);
           document.querySelector('p').removeAttribute('hidden');
-          reload();
         }).catch(function(error) {
           console.log('Failed to register service worker');
+          console.log(error);
         });
       }
 

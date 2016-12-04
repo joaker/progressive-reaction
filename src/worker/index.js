@@ -32,12 +32,47 @@ function precache(event) {
   );
 }
 
-function fetchMiddleware(event) {
-  if (isCacheable(event)) {
-    fetchWithCache(event);
-  } else {
-    fetchWithoutCache(event);
+const handleCacheableResponse = (event, request, response) => {
+  if(isCacheable(event)){
+    event.waitUntil(saveToCache(request, response));
   }
+  return response;
+}
+
+const defaultErrorMessage = "The service worker encountered an error";
+const baseServerError = {
+  status: 500,
+  type: "error",
+  message: defaultErrorMessage,
+  inner: null,
+};
+
+const throwServerError = (message = defaultErrorMessage, inner = null) => Object.assign({},
+  baseServerError,
+  {
+    message,
+    inner,
+  });
+
+const asErrorResponse = (response = {}) => ({ // convert non-http errors to the http error format
+  status: 500,
+  type: 'error',
+  message: response.message || defaultErrorMessage,
+  inner: response,
+});
+
+function fetchMiddleware(event) {
+  const req = event.request;
+
+  const localOrCachedResponse = fetchWithoutCache(event, 300)
+    .catch(asErrorResponse)
+    .then(response => {
+      if(!hasError(response)){
+        return handleCacheableResponse(event, request, response);
+      }
+      return getCachedResponse(event, response);
+    })
+    .catch(asErrorResponse);
 }
 
 function activateMiddleware() {
@@ -69,6 +104,7 @@ const createEventMetadata = (event) => {
 
   // request type definitions
   const isServiceWorker = /service-worker\.bundle\.js$/.test(url);
+  if(isServiceWorker) return {};
 
   // request type definitions
   const isScript= /\.js$/.test(url);
@@ -106,52 +142,45 @@ function isCacheable(event) {
 
 
 
-function fetchWithoutCache(event) {
-  const forwardedFetch = fetch(event.request.url);
-  event.respondWith(forwardedFetch);
+function fetchWithoutCache(event, timeout = 200) {
+  return new Promise((resolve, reject)=>{
+    const timerID = setTimeout(reject, timeout);
+    const networkResponse = fetch(event.request)
+      .then(response => {
+        clearTimeout(timerID); // We made it.  Relax
+        resolve(response); // Send back the response
+      }, reject); // if the fetch fails, so does the wrapping promise
+    return networkResponse;
+  });
 }
 
-function fetchWithCache(event) {
+function getCachedResponse(event, errorResponse={status: 501, message: "service worker error"}) {
+
+  const { status, inner } = errorResponse;
+  const innerError = message || JSON.stringify(inner || "<none");
+
   const onceOrFuturePage = caches.match(event.request).then(function(cachedPageFound) {
     if (cachedPageFound) {
       return cachedPageFound;
     }
-    return fetchThenCacheRequest(event);
+
+    const url = event && event.request && event.request.url;
+    const message = `cache miss for failed network request status<${status}>: ${url}\n ERROR: ${innerError}`;
+    throwServerError(message);
   });
-
-  event.respondWith(onceOrFuturePage);
-}
-
-function fetchThenCacheRequest(event) {
-  const request = event.request;
-  const url = request.url;
-
-  // IMPORTANT: Clone the request
-  // A request is a stream and can only be consumed once
-  // Both the browser and the cache need the fetch response
-  // Clone the fetch response so there will be two copies
-  // TODO: determine if this is actually necessary, or just the response clone
-  var clonedRequest = request.clone();
-
-  return fetch(clonedRequest).then(
-    function(response) {
-      if (hasError(response)) {
-        return response;
-      }
-      saveResponse(request, response)
-      return response;
-    });
 }
 
 function hasError(response) {
-  const error = !response || response.status !== 200 || response.type !== 'basic';
+  const error = !response || response.status !== 200;
   return error;
 }
 
 // NOTE: the response must be cloned so the stream can be consumed by both the cache and the browser
-function saveResponse(request, response) {
+function saveToCache(baseRequest, baseResponse) {
+  const request = baseRequest.clone();
+  const response = baseResponse.clone();
   return caches.open(config.name).then(function(cache) {
-    return cache.put(request, response.clone());
+    return cache.put(request, response);
   });
 }
 
