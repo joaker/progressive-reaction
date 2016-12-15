@@ -6,7 +6,6 @@
     </title>
   </head>
   <body>
-    <div id="container"></div>
     <ul>
       <li>
         <a href="https://github.com/github/progressive-scheduler">
@@ -17,11 +16,14 @@
     <li>
       <a onclick="unregister()" href="#">Unregister</a>
     </li>
+
+    <div id="container"></div>
+
     <p id="message" hidden>
       Service worker registered!
     </p>
     <p id="offline-message" hidden>
-      Service worker registered!
+      webpage is offline!
     </p>
     <script>
       const worker = navigator.serviceWorker;

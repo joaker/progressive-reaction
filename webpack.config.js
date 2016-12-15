@@ -1,4 +1,5 @@
 const webpack = require('webpack');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   devtool: 'eval-source-map',
@@ -27,6 +28,10 @@ module.exports = {
       'React': 'react',
       'ReactDOM': 'react-dom'
     }),
+    new CopyWebpackPlugin([
+      {from: 'src/client/assets/images/dots.ico', to: 'favicon.ico'},
+      {from: 'src/client/assets/images/', to: 'images/'},
+    ]),
   ],
   resolve: {
     extensions: ['', '.js', '.jsx'],

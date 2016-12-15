@@ -1,5 +1,6 @@
 export const config = {
   name: 'progressive-scheduler-cache-name',
+  cacheFirst: true,
   options: {
     headers: {
       'Content-Type': 'text/html'
