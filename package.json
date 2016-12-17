@@ -1,7 +1,7 @@
 {
-  "name": "progressive-scheduler",
+  "name": "progressive-reaction",
   "version": "1.0.0",
-  "description": "progressive resource scheduling app",
+  "description": "progressive web app with react",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",

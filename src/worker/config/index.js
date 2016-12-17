@@ -1,5 +1,5 @@
 export const config = {
-  name: 'progressive-scheduler-cache-name',
+  name: 'progressive-reaction-cache-name',
   cacheFirst: true,
   options: {
     headers: {
@@ -7,8 +7,6 @@ export const config = {
     },
   },
   staticFiles: [ // we don't want to cache assets that will be inclduded by default
-    // "/",
-    // "/AppShell.bundle.js",
   ],
 };
 
