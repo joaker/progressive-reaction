@@ -9,24 +9,9 @@ progressive-reaction is a boilerplate for creating react apps that have progress
 
 ## What might work later:
 
-
-
-```jsx
-class HelloMessage extends React.Component {
-  render() {
-    return <div>Hello {this.props.name}</div>;
-  }
-}
-
-ReactDOM.render(
-  <HelloMessage name="John" />,
-  document.getElementById('container')
-);
-```
-
-This example will render "Hello John" into a container on the page.
-
-You'll notice that we used an HTML-like syntax; [we call it JSX](https://facebook.github.io/react/docs/jsx-in-depth.html). JSX is not required to use React, but it makes code more readable, and writing it feels like writing HTML. A simple transform is included with React that allows converting JSX into native JavaScript for browsers to digest.
+- Messaging between clients pages and the services
+- placeholders for dynamic content when it is unavailable
+- Routing to network-only bundles
 
 ## Usage
 
