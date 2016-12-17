@@ -1,32 +1,26 @@
 import log from "../log";
 import config from "../config";
-import {getEventError, getServerErrorResponse} from "../error";
-
+// import {getEventError, getServerErrorResponse} from "../error";
 
 export const saves = (request, response) => {
-  // const request = baseRequest.clone();
-  // const response = baseResponse.clone();
-  const savesRequest = openCache().then(function(cache) {
+  const savesRequest = opensCache().then(function(cache) {
     return cache.put(request, response.clone());
   }).then(() => response , err => {
     const errorMessage = 'problem saving request cache';
     const error = err || new Error(errorMessage);
     log('problem saving request cache', error);
-    throw error;
+    log(`offending response: <${response}>`);
+    // throw error; // don't throw, failing to cache is not a cardinal sin
+    return response;
   });
 
   return savesRequest;
 };
 
 export const gets = (event) => {
-  return opensCache().then(cache => cache.match(event.request).then((cachedPageFound) => {
-    if (cachedPageFound) {
-      log(cachedPageFound)
-      return cachedPageFound;
-    }
-    getEventError(event);
-
-  }, err => getEventError(event)));
+  const {request} = event;
+  const {url} = request;
+  return opensCache().then(cache => cache.match(event.request));
 }
 
 const opensCache = () => caches.open(config.name);
@@ -67,12 +61,20 @@ export const precaches = () => {
 
 const defaultMetadata = {};
 const createEventMetadata = (event) => {
-  const url = event && event.request && event.request.url;
+
+  log(`event is: ${JSON.stringify(event)}`)
+
+  const {request = {}} = event;
+  const {url = ""} = request;
   if(!url) return defaultMetadata;
 
   // request type definitions
   const isServiceWorker = /service-worker\.bundle\.js$/.test(url);
   if(isServiceWorker) return {};
+
+  if(request.method !== 'GET') {
+    return {}; // only cache GET requests
+  }
 
   // request type definitions
   const isScript= /\.js$/.test(url);
@@ -89,15 +91,14 @@ const createEventMetadata = (event) => {
     isPath,
   ];
 
-  // Does this request match any of the criteria?
-  const isCacheable= cacheableCriteria.some(cc => cc);
+  const cacheable = cacheableCriteria.some(cc => cc);
 
   const metadata = {
     isScript,
     isStyle,
     isHTML,
     isPath,
-    isCacheable,
+    isCacheable: cacheable,// Does this request match any of the criteria?
   };
 
   return metadata;
@@ -105,6 +106,7 @@ const createEventMetadata = (event) => {
 
 // Is this a resource we want to cache?
 export const isCacheable = (event) => {
+  console.log(`isCacheable Requested for event: ${JSON.stringify(event)}`)
   const metadata = createEventMetadata(event);
   const cacheable = metadata.isCacheable;
   return cacheable;

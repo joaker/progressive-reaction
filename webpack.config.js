@@ -2,17 +2,19 @@ const webpack = require('webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
-  devtool: 'eval-source-map',
+  devtool: 'source-map',
   entry: {
     AppShell: [
-      'webpack-hot-middleware/client',
-      // 'babel-polyfill',
-      // __dirname + '/src/polyfills.js', // polyfills for Promise and fetch
+      // 'webpack-hot-middleware/client',
+      //
+      //
+      // // 'babel-polyfill',
+      // // __dirname + '/src/polyfills.js', // polyfills for Promise and fetch
       __dirname + '/src/client/AppShell' // boot code for the client
     ],
     "service-worker": [
-      'webpack-hot-middleware/client',
-      // 'babel-polyfill',
+      // 'webpack-hot-middleware/client',
+      // // 'babel-polyfill',
       __dirname + '/src/worker/index' // boot code for the client
     ],
   },
