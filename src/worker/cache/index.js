@@ -36,7 +36,7 @@ const getsCacheKeys = () => opensCache().then(cache => {
   });
 });
 
-const deletesKeys = () => getsCacheKeys().then(({cache, keys}) => {
+export const deletesKeys = () => getsCacheKeys().then(({cache, keys}) => {
     const deletesKey = key => cache.delete(key);
     const deletions = keys.map(deletesKey);
     const allKeysDeleted = Promise.all(deletions);
