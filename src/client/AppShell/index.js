@@ -27,7 +27,8 @@ export class App extends React.Component {
   render() {
     return (
       <div>
-        <p>Hello, I'm a react component</p>
+        <p>Hello, I'm an App Shell.</p>
+        <p>If you're seeing this, you can disconnect the server and the cached App Shell will load</p>
         <button onClick={() => {
           Messenger.send('The display image list was found');
           this.setState({
