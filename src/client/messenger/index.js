@@ -1,15 +1,25 @@
 
 
 export const onMessage = (handler = defaultMessageHandler) => {
-  if (!hasWorker()) return;
+  if (!hasWorker()) {
+    'There is no service worker, cannot register client message listener'
+    return;
+  }
+
+  console.log('client message listener registered');
   navigator.serviceWorker.addEventListener('message', getMessage(handler));
 }
 
 export const send = (message) => {
-  if (!hasWorker()) return;
+  if (!hasWorker()) {
+    console.log(`There is no service worker, cannot send client message: "${message}"`);
+    return;
+  }
+  console.log(`sending client message: "${message}"`);
   return new Promise(function(resolve, reject) {
     var messageChannel = new MessageChannel();
     messageChannel.port1.onmessage = function(event) {
+      console.log(`Server message received: "${JSON.stringinfy(event)}"`);
       if (event.data.error) {
         reject(event.data.error);
       } else {

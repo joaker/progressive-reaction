@@ -29,6 +29,7 @@ export class App extends React.Component {
       <div>
         <p>Hello, I'm a react component</p>
         <button onClick={() => {
+          Messenger.send('The display image list was found');
           this.setState({
             showDots: !this.state.showDots,
           });

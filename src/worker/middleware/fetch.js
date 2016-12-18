@@ -49,7 +49,7 @@ export const fetchMiddleware = (event = {}) => {
       .then(fromNetwork)  // ask the network for the missing cache entry
       .then(networkResponse => {
 
-        log(`typeof networkResponse: %%{typeof networkResponse}%%`)
+        log(`typeof networkResponse: %%${typeof networkResponse}%%`)
 
         return savesCache(request, networkResponse); // save the good network response for future use
       })

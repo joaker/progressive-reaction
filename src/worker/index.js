@@ -17,10 +17,14 @@ const messenger = createMessenger(workerRegistration);
 const log = (msg) => console.log(msg);
 
 /* START Messenging */
-messenger.onMessage = (message) => {
+// messenger.onMessage = (message) => {
+//   log("hey there, got a message for you:");
+//   log(message);
+// }
+messenger.onMessage((message) => {
   log("hey there, got a message for you:");
   log(message);
-}
+});
 messenger.send("hello, worker");
 /* END Messenging */
 
