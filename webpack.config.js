@@ -5,7 +5,7 @@ module.exports = {
   devtool: 'source-map',
   entry: {
     AppShell: [
-      // 'webpack-hot-middleware/client',
+      'webpack-hot-middleware/client',
       //
       //
       // // 'babel-polyfill',
@@ -13,7 +13,7 @@ module.exports = {
       __dirname + '/src/client/AppShell' // boot code for the client
     ],
     "service-worker": [
-      // 'webpack-hot-middleware/client',
+      'webpack-hot-middleware/client',
       // // 'babel-polyfill',
       __dirname + '/src/worker/index' // boot code for the client
     ],
@@ -33,6 +33,19 @@ module.exports = {
     new CopyWebpackPlugin([
       {from: 'src/client/assets/images/dots.ico', to: 'favicon.ico'},
       {from: 'src/client/assets/images/', to: 'images/'},
+      {from: 'src/client/assets/css/', to: 'css/'},
+      {
+        from: 'node_modules/css-reset-and-normalize/css/reset-and-normalize.css',
+        to: 'css/reset-and-normalize.css'
+      },
+      {
+        from: 'node_modules/react-mdl/extra/material.css',
+        to: 'css/material.css'
+      },
+      {
+        from: 'node_modules/react-mdl/extra/material.js',
+        to: 'js/material.js'
+      },
     ]),
   ],
   resolve: {
@@ -44,7 +57,7 @@ module.exports = {
         loader: 'babel-loader',
         exclude: /node_modules/,
         include: __dirname,
-        test: /\.jsx?$/,
+        test: /(\.js|\.jsx)?$/,
 
         // Options to configure babel with
         query: {

@@ -1,0 +1,11 @@
+.mdl-button {
+  background: rgb(84, 84, 200); /* The Fallback */
+  background: rgba(84, 84, 200, 0.70);
+  color:white;
+}
+
+.mdl-button:hover {
+  background: rgb(54, 54, 200); /* The Fallback */
+  background: rgba(54, 54, 200, 0.90);
+  color:white;
+}

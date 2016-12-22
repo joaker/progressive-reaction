@@ -1,16 +1,18 @@
-import "./index.scss";
-import Messenger from "../messenger";
-import React from "react";
+import styles from './index.scss';
+import Messenger from '../messenger';
+import React from 'react';
 
-// <img src="http://images.macmillan.com/folio-assets/interiors-images/9780374318352.IN08.jpg"/>;
+import {Button} from 'react-mdl';
+
+// <img src='http://images.macmillan.com/folio-assets/interiors-images/9780374318352.IN08.jpg'/>;
 
 
 const Dots = () => (
-  <div className="dots">
-    <img src="/images/dots.jpg"/>;
+  <div className={styles.dots}>
+    <img src='/images/dots.jpg'/>;
   </div>
 );
-const NoDots = () => <div className="noDots"/>;
+const NoDots = () => <div className={styles.noDots}/>;
 
 const Dottable = ({show}) => {
   console.log(`showing? ${show}`)
@@ -29,12 +31,12 @@ export class App extends React.Component {
       <div>
         <p>Hello, I'm an App Shell.</p>
         <p>If you're seeing this, you can disconnect the server and the cached App Shell will load</p>
-        <button onClick={() => {
+        <p><Button className={styles.button} onClick={() => {
           Messenger.send('The display image list was found');
           this.setState({
             showDots: !this.state.showDots,
           });
-        }}>GetImage</button>
+        }}>Get Image</Button></p>
         <Dottable show={this.state.showDots}/>
 
       </div>
